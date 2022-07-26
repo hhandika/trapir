@@ -11,9 +11,9 @@ class _BottomNavbarState extends State<BottomNavbar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("My App")),
+      appBar: AppBar(title: const Text("TRAPIR")),
       body: const Center(
-        child: Text('Nahpu Project'),
+        child: Text('trapir Project'),
       ),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 10,
