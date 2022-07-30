@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'package:drift/drift.dart' as db;
 import 'package:uuid/uuid.dart';
+import 'package:provider/provider.dart';
 
 import '../projects/project_menu.dart';
 import 'package:trapir/database/database.dart';
@@ -36,6 +37,8 @@ class _NewProjectFormState extends State<CreateProjectForm> {
           backgroundColor: const Color(0xFF2457C5),
         ),
         body: Center(
+            child: Form(
+          key: _formKey,
           child: Column(
               // mainAxisAlignment: MainAxisAlignment.center,
               // crossAxisAlignment: CrossAxisAlignment.center,
@@ -47,7 +50,7 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                           children: [
                             ProjectFormField(
                               controller: projectNameController,
-                              labelText: 'Project name',
+                              labelText: 'Project name*',
                               inputFormatters: [
                                 LengthLimitingTextInputFormatter(50),
                                 FilteringTextInputFormatter.allow(
@@ -56,48 +59,55 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                               ],
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Catalog number start is required';
+                                  return 'Project name is required';
                                 }
                                 return null;
                               },
                             ),
                             ProjectFormField(
                               controller: descriptionController,
-                              labelText: 'Project description',
+                              labelText: 'Project description*',
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Catalog number start is required';
+                                  return 'Project description is required';
                                 }
                                 return null;
                               },
                             ),
                             ProjectFormField(
                               controller: collectorController,
-                              labelText: 'Collector',
+                              labelText: 'Collector*',
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Catalog number start is required';
+                                  return 'Collector name is required';
                                 }
                                 return null;
                               },
                             ),
                             ProjectFormField(
                               controller: collectorEmailController,
-                              labelText: 'Collector email',
+                              labelText: 'Collector email*',
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Catalog number start is required';
+                                  return 'Collector email is required';
                                 }
                                 return null;
                               },
                             ),
                             ProjectFormField(
                               controller: catNumController,
-                              labelText: 'Catalog number start',
+                              labelText: 'Catalog number start*',
                               keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(r'[0-9]+'),
+                                ),
+                              ],
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Catalog number start is required';
+                                } else if (!value.isValidCatNum) {
+                                  return 'Catalog number must be a number';
                                 }
                                 return null;
                               },
@@ -105,12 +115,6 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                             ProjectFormField(
                               controller: teamLaederController,
                               labelText: 'Team leader',
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Catalog number start is required';
-                                }
-                                return null;
-                              },
                             ),
                             Wrap(spacing: 10, children: [
                               ElevatedButton(
@@ -128,7 +132,6 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                                   backgroundColor: MaterialStateProperty.all(
                                       const Color(0xFF2457C5)),
                                 ),
-                                child: const Text('Create'),
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
                                     _createProject();
@@ -141,16 +144,17 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                                     );
                                   }
                                 },
+                                child: const Text('Create'),
                               )
                             ])
                           ],
                         )))
               ]),
-        ));
+        )));
   }
 
   Future<void> _createProject() async {
-    final database = Database();
+    final database = Provider.of<Database>(context, listen: false);
     database.createProject(ProjectCompanion(
       projectId: db.Value(_uuidKey),
       projectName: db.Value(projectNameController.text),
@@ -170,14 +174,14 @@ class ProjectFormField extends StatelessWidget {
       required this.controller,
       this.keyboardType,
       this.inputFormatters,
-      required this.validator})
+      this.validator})
       : super(key: key);
 
   final String labelText;
   final TextEditingController controller;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
-  final FormFieldValidator<String> validator;
+  final String? Function(String?)? validator;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -194,19 +198,15 @@ class ProjectFormField extends StatelessWidget {
   }
 }
 
-// extension StringValidator on String {
-//   bool get isValidCatNum {
-//     final catNumRegex = RegExp(r'[0-9]');
-//     return catNumRegex.hasMatch(this);
-//   }
+extension StringValidator on String {
+  bool get isValidCatNum {
+    final catNumRegex = RegExp(r'[0-9]');
+    return catNumRegex.hasMatch(this);
+  }
 
-//   bool get isValidEmail {
-//     final emailRegex =
-//         RegExp(r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$');
-//     return emailRegex.hasMatch(this);
-//   }
-
-//   bool get isNotNull {
-//     return this != null;
-//   }
-// }
+  bool get isValidEmail {
+    final emailRegex =
+        RegExp(r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$');
+    return emailRegex.hasMatch(this);
+  }
+}

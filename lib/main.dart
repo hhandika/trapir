@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:trapir/screens/main_menu.dart';
 
-import './screens/bottom_navbar.dart';
+import './screens/main_menu.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const BottomNavbar(),
+      home: const MainMenu(),
     );
   }
 }
