@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
    version = "1.0">
@@ -5,3 +6,15 @@
       location = "group:Runner.xcodeproj">
    </FileRef>
 </Workspace>
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:Runner.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+</Workspace>
+>>>>>>> 07bca315f69d886a0ff4cdf5b35e89e9d61826b1

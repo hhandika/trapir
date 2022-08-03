@@ -1,1 +1,6 @@
+<<<<<<< HEAD
 #include "ephemeral/Flutter-Generated.xcconfig"
+=======
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"
+#include "ephemeral/Flutter-Generated.xcconfig"
+>>>>>>> 07bca315f69d886a0ff4cdf5b35e89e9d61826b1
