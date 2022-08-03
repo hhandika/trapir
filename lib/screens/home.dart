@@ -28,7 +28,8 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("HOME", style: Theme.of(context).textTheme.headline6),
+        title:
+            Text("TRAPIR HOME", style: Theme.of(context).textTheme.headline6),
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
