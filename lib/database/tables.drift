@@ -1,0 +1,26 @@
+CREATE TABLE project (
+    projectUuid TEXT NOT NULL PRIMARY KEY,
+    projectName TEXT NOT NULL UNIQUE,
+    projectDescription TEXT,
+    principalInvestigator TEXT,
+    collector TEXT,
+    collectorInitial TEXT,
+    collectorEmail TEXT,
+    catNumStart INT,
+    catNumEnd INT
+);
+
+CREATE TABLE site (
+    siteID TEXT NOT NULL PRIMARY KEY,
+    projectUuid TEXT,
+    leadStuff TEXT,
+    type TEXT,
+    country TEXT,
+    state TEXT,
+    preciseLocality TEXT,
+    latitude REAL,
+    longitude REAL,
+    elevation INT
+);
+
+listProject: SELECT projectUuid,projectName FROM project;
