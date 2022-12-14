@@ -8,7 +8,6 @@ import 'package:trapir/models/project.dart';
 import 'package:trapir/screens/projects/new_project.dart';
 import 'package:trapir/screens/projects/project_home.dart';
 import 'package:trapir/screens/projects/project_info.dart';
-import 'package:provider/provider.dart';
 import 'package:trapir/database/database.dart';
 
 enum MenuSelection { details, deleteProject }

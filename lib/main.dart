@@ -1,30 +1,34 @@
-import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
-import 'package:trapir/database/database.dart';
-import 'package:trapir/screens/home.dart';
 
-import 'package:provider/provider.dart';
+import 'package:dynamic_color/dynamic_color.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:trapir/configs/themes.dart';
+import 'package:trapir/providers/settings.dart';
+import 'package:trapir/screens/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  runApp(ProviderScope(
+      overrides: [settingProvider.overrideWithValue(prefs)],
+      child: const NahpuApp()));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class NahpuApp extends ConsumerWidget {
+  const NahpuApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(themeSettingProvider.notifier).initTheme(ref);
     return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
-      return Provider(
-        create: (_) => Database(),
-        child: MaterialApp(
-          title: 'TRAPIR',
-          home: const Home(),
-          theme: TrapirTheme.lightTheme(lightColorScheme),
-          darkTheme: TrapirTheme.darkTheme(darkColorScheme),
-        ),
-        dispose: (_, Database database) => database.close(),
+      return MaterialApp(
+        title: 'Nahpu',
+        home: const Home(),
+        theme: ConfigTheme.lightTheme(lightColorScheme),
+        darkTheme: ConfigTheme.darkTheme(darkColorScheme),
+        themeMode: ref.watch(themeSettingProvider),
       );
     });
   }

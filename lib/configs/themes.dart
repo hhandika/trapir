@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class TrapirTheme {
+class ConfigTheme {
   static final _defaultLightColorScheme =
       ColorScheme.fromSwatch(primarySwatch: Colors.green);
 
