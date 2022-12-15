@@ -2,13 +2,9 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 
 // import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:trapir/models/project.dart';
 
 import 'package:trapir/screens/home.dart';
 import 'package:trapir/screens/projects/new_project.dart';
-
-import 'package:trapir/database/database.dart';
-import 'package:trapir/screens/projects/project_info.dart';
 
 class ProjectHome extends StatefulWidget {
   const ProjectHome({Key? key, required this.projectUuid}) : super(key: key);
@@ -278,23 +274,25 @@ class ProjectOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final data = ProjectModel(context: context).getProjectByUuid(
-      projectUuid,
-    );
+    // final data = ProjectModel(context: context).getProjectByUuid(
+    //   projectUuid,
+    // );
     return Card(
         color: Theme.of(context).colorScheme.surface,
-        child: SingleChildScrollView(
-            child: FutureBuilder(
-                future: data,
-                builder: (context, AsyncSnapshot<ProjectData> snapshot) {
-                  if (snapshot.hasError) {
-                    return showAlert(context, 'Error: ${snapshot.error}');
-                  } else {
-                    return ListTile(
-                        title: const Text('Project Overview'),
-                        subtitle: ProjectInfo(projectData: snapshot.data));
-                  }
-                })));
+        child: const SingleChildScrollView(
+          child: Text('Project Overview'),
+        ));
+    // child: FutureBuilder(
+    //     future: data,
+    //     builder: (context, AsyncSnapshot<ProjectData> snapshot) {
+    //       if (snapshot.hasError) {
+    //         return showAlert(context, 'Error: ${snapshot.error}');
+    //       } else {
+    //         return ListTile(
+    //             title: const Text('Project Overview'),
+    //             subtitle: ProjectInfo(projectData: snapshot.data));
+    //       }
+    //     })));
   }
 
   Widget showAlert(BuildContext context, String error) {

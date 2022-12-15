@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:drift/drift.dart' as db;
 import 'package:uuid/uuid.dart';
 
 import 'project_home.dart';
-import 'package:trapir/database/database.dart';
-import 'package:trapir/models/project.dart';
 
 class CreateProjectForm extends StatefulWidget {
   const CreateProjectForm({Key? key}) : super(key: key);
@@ -60,9 +57,9 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                               validator: (value) => _validationMsg,
                             ),
                             onFocusChange: (hasFocus) {
-                              if (!hasFocus) {
-                                _checkProjectName();
-                              }
+                              // if (!hasFocus) {
+                              //   _checkProjectName();
+                              // }
                             },
                           ),
                           ProjectFormField(
@@ -97,17 +94,17 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                             ),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                onPrimary: Theme.of(context)
+                                foregroundColor: Theme.of(context)
                                     .colorScheme
                                     .onSecondaryContainer,
-                                primary: Theme.of(context)
+                                backgroundColor: Theme.of(context)
                                     .colorScheme
                                     .secondaryContainer,
                               ),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
-                                  _createProject();
+                                  // _createProject();
                                   _goToProjectHome();
                                 }
                               },
@@ -121,33 +118,33 @@ class _NewProjectFormState extends State<CreateProjectForm> {
         ));
   }
 
-  Future<void> _createProject() async {
-    await ProjectModel(context: context).createProject(ProjectCompanion(
-      projectUuid: db.Value(_uuidKey),
-      projectName: db.Value(projectNameController.text),
-      projectDescription: db.Value(descriptionController.text),
-      principalInvestigator: db.Value(piController.text),
-      cataloger: db.Value(collectorController.text),
-    ));
-  }
+  // Future<void> _createProject() async {
+  //   await ProjectModel(context: context).createProject(ProjectCompanion(
+  //     projectUuid: db.Value(_uuidKey),
+  //     projectName: db.Value(projectNameController.text),
+  //     projectDescription: db.Value(descriptionController.text),
+  //     principalInvestigator: db.Value(piController.text),
+  //     cataloger: db.Value(collectorController.text),
+  //   ));
+  // }
 
-  Future _checkProjectName() async {
-    _validationMsg = null;
-    setState(() {});
+  // Future _checkProjectName() async {
+  //   _validationMsg = null;
+  //   setState(() {});
 
-    if (projectNameController.text.isEmpty) {
-      _validationMsg = 'Project name is required';
-      setState(() {});
-      return;
-    }
+  //   if (projectNameController.text.isEmpty) {
+  //     _validationMsg = 'Project name is required';
+  //     setState(() {});
+  //     return;
+  //   }
 
-    bool isExist = await ProjectModel(context: context)
-        .isProjectExists(projectNameController.text);
-    if (isExist) {
-      _validationMsg = 'Project name already exists';
-      return;
-    }
-  }
+  //   bool isExist = await ProjectModel(context: context)
+  //       .isProjectExists(projectNameController.text);
+  //   if (isExist) {
+  //     _validationMsg = 'Project name already exists';
+  //     return;
+  //   }
+  // }
 
   Future<void> _goToProjectHome() async {
     await Navigator.push(

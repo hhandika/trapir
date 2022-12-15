@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:realm/realm.dart';
+import 'package:trapir/models/project.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:trapir/providers/projects.dart';
 
 import 'package:trapir/screens/projects/new_project.dart';
 import 'package:trapir/screens/projects/project_home.dart';
-import 'package:trapir/screens/projects/project_info.dart';
 
 enum MenuSelection { details, deleteProject }
 
-class Home extends StatefulWidget {
+class Home extends ConsumerStatefulWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  HomeState createState() => HomeState();
 }
 
-class _HomeState extends State<Home> {
+class HomeState extends ConsumerState<Home> {
   final Uri _helpUrl = Uri(
       scheme: 'https', host: 'www.github.com', path: 'hhandika/trapir/issues');
 
@@ -141,10 +144,11 @@ class _HomeState extends State<Home> {
   }
 
   Widget _drawListView() {
-    // Future<List<ListProjectResult>> projectList = _getProjectList();
+    Future<RealmResults<Projects>> projectList =
+        ref.read(realmProvider).getProjects();
     return Expanded(
-      child: FutureBuilder<List<ListProjectResult>>(
-        // future: projectList,
+      child: FutureBuilder<RealmResults<Projects>>(
+        future: projectList,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
@@ -167,7 +171,7 @@ class _HomeState extends State<Home> {
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   subtitle: Text(
-                    snapshot.data![index].projectUuid,
+                    snapshot.data![index].uuid,
                     style: const TextStyle(fontSize: 8),
                   ),
                   trailing: PopupMenuButton<MenuSelection>(
@@ -178,15 +182,15 @@ class _HomeState extends State<Home> {
                               value: MenuSelection.details,
                               child: const Text('Info'),
                               onTap: () async {
-                                _getProjectInfo(
-                                    context, snapshot.data![index].projectUuid);
+                                // _getProjectInfo(
+                                //     context, snapshot.data![index].uuid);
                               },
                             ),
                             PopupMenuItem<MenuSelection>(
                               value: MenuSelection.deleteProject,
                               onTap: () async {
-                                _deleteProject(
-                                    context, snapshot.data![index].projectUuid);
+                                // _deleteProject(
+                                //     context, snapshot.data![index].uuid);
                               },
                               child: const Text('Delete',
                                   style: TextStyle(color: Colors.red)),
@@ -197,7 +201,7 @@ class _HomeState extends State<Home> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => ProjectHome(
-                                projectUuid: snapshot.data![index].projectUuid,
+                                projectUuid: snapshot.data![index].uuid,
                               )),
                     );
                   },
@@ -211,10 +215,6 @@ class _HomeState extends State<Home> {
         },
       ),
     );
-  }
-
-  Future<void> _deleteProject(BuildContext context, String projectUuid) async {
-    ProjectModel(context: context).deleteProject(projectUuid);
   }
 
   void _onPopupMenuSelected(MenuSelection item) {
@@ -232,33 +232,33 @@ class _HomeState extends State<Home> {
   //   return Provider.of<Database>(context, listen: false).getProjectList();
   // }
 
-  Future<void> _getProjectInfo(BuildContext context, projectUuid) async {
-    final projectData = await ProjectModel(context: context).getProjectByUuid(
-      projectUuid,
-    );
+  // Future<void> _getProjectInfo(BuildContext context, uuid) async {
+  //   final projectData = await ProjectModel(context: context).getProjectByUuid(
+  //     uuid,
+  //   );
 
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Project information'),
-          content: SingleChildScrollView(
-            child: ProjectInfo(
-              projectData: projectData,
-            ),
-          ),
-          actions: <Widget>[
-            ElevatedButton(
-              child: const Text('Close'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  //   return showDialog<void>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: const Text('Project information'),
+  //         content: SingleChildScrollView(
+  //           child: ProjectInfo(
+  //             projectData: projectData,
+  //           ),
+  //         ),
+  //         actions: <Widget>[
+  //           ElevatedButton(
+  //             child: const Text('Close'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   Future<void> _launchHelpUrl(Uri url) async {
     if (!await launchUrl(
