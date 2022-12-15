@@ -1,39 +1,58 @@
-import 'package:flutter/material.dart';
-import 'package:trapir/database/database.dart';
+import 'package:realm/realm.dart';
 
-import 'package:provider/provider.dart';
+part 'project.g.dart';
 
-class ProjectModel {
-  final BuildContext context;
-  final Database db;
+@RealmModel()
+class _Projects {
+  @PrimaryKey()
+  late String uuid;
 
-  ProjectModel({required this.context})
-      : db = Provider.of<Database>(context, listen: false);
+  late String projectName;
+  late String projectDescription;
+  late String projectLocation;
+  late String projectCreationDate;
+  late String projectLastUpdateDate;
+  late String principalInvestigator;
+  late String dataCollector;
+}
 
-  Future<void> createProject(ProjectCompanion project) async {
-    return db.createProject(project);
-  }
+@RealmModel()
+class _Images {
+  @PrimaryKey()
+  late String projectUuid;
 
-  Future<List<ProjectData>> getAllProjects() async {
-    return db.getAllProjects();
-  }
+  late String imageParentPath;
+  late String deploymentId;
+  late String? gridId;
+  late _ImageMetadata? imageMetadata;
+  late String? identifiedBy;
+  late _Taxonomy? taxon;
+  late String age;
+  late String sex;
+  late int temperatureInCelsius;
+}
 
-  Future<ProjectData> getProjectByUuid(String uuid) async {
-    return db.getProjectByUuid(uuid);
-  }
+@RealmModel()
+class _ImageMetadata {
+  @PrimaryKey()
+  late String imageId;
 
-  Future<String?> getProjectByName(String projectName) async {
-    final String? query = await db
-        .getProjectByName(projectName)
-        .then((value) => value?.projectName);
-    return query;
-  }
+  late String imagePath;
+  late String? imageType;
+  late String? imageFormat;
+  late DateTime? captureDate;
+}
 
-  Future<bool> isProjectExists(String projectName) async {
-    return getProjectByName(projectName).then((value) => value != null);
-  }
+@RealmModel()
+class _Taxonomy {
+  @PrimaryKey()
+  late ObjectId taxonId;
 
-  Future<void> deleteProject(String projectUuid) async {
-    return await db.deleteProject(projectUuid);
-  }
+  late String taxonClass;
+  late String taxonOrder;
+  late String taxonFamily;
+  late String genus;
+  late String specificEpithet;
+  late String? infraspecificEpithet;
+  late String? taxonCommonName;
 }

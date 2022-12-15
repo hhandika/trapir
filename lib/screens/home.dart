@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:trapir/models/project.dart';
-
 import 'package:trapir/screens/projects/new_project.dart';
 import 'package:trapir/screens/projects/project_home.dart';
 import 'package:trapir/screens/projects/project_info.dart';
-import 'package:trapir/database/database.dart';
 
 enum MenuSelection { details, deleteProject }
 
@@ -144,10 +141,10 @@ class _HomeState extends State<Home> {
   }
 
   Widget _drawListView() {
-    Future<List<ListProjectResult>> projectList = _getProjectList();
+    // Future<List<ListProjectResult>> projectList = _getProjectList();
     return Expanded(
       child: FutureBuilder<List<ListProjectResult>>(
-        future: projectList,
+        // future: projectList,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
@@ -231,9 +228,9 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Future<List<ListProjectResult>> _getProjectList() async {
-    return Provider.of<Database>(context, listen: false).getProjectList();
-  }
+  // Future<List<ListProjectResult>> _getProjectList() async {
+  //   return Provider.of<Database>(context, listen: false).getProjectList();
+  // }
 
   Future<void> _getProjectInfo(BuildContext context, projectUuid) async {
     final projectData = await ProjectModel(context: context).getProjectByUuid(

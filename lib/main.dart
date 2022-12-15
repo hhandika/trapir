@@ -13,11 +13,11 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   runApp(ProviderScope(
       overrides: [settingProvider.overrideWithValue(prefs)],
-      child: const NahpuApp()));
+      child: const TrapirApp()));
 }
 
-class NahpuApp extends ConsumerWidget {
-  const NahpuApp({Key? key}) : super(key: key);
+class TrapirApp extends ConsumerWidget {
+  const TrapirApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
