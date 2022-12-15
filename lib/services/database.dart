@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:path_provider/path_provider.dart';
 import 'package:realm/realm.dart';
 
 import 'package:trapir/models/project.dart';
+import 'package:path/path.dart' as p;
 
 class DatabaseService {
   DatabaseService() {
@@ -8,12 +12,13 @@ class DatabaseService {
   }
 
   final Configuration _config = Configuration.local(
-      [Projects.schema, Images.schema, ImageMetadata.schema, Taxonomy.schema],
-      path: 'trapir.realm');
+    [Projects.schema, Images.schema, ImageMetadata.schema, Taxonomy.schema],
+  );
 
   late Realm _realm;
 
   openRealm() {
+    Configuration.defaultRealmName = 'trapir.realm';
     _realm = Realm(_config);
   }
 
