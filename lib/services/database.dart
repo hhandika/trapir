@@ -1,10 +1,6 @@
-import 'dart:io';
-
-import 'package:path_provider/path_provider.dart';
 import 'package:realm/realm.dart';
 
 import 'package:trapir/models/project.dart';
-import 'package:path/path.dart' as p;
 
 class DatabaseService {
   DatabaseService() {
