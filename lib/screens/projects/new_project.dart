@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:trapir/models/project.dart';
+import 'package:trapir/providers/projects.dart';
 
 import 'package:uuid/uuid.dart';
 
 import 'project_home.dart';
 
-class CreateProjectForm extends StatefulWidget {
-  const CreateProjectForm({Key? key}) : super(key: key);
+class NewProjectForm extends ConsumerStatefulWidget {
+  const NewProjectForm({Key? key}) : super(key: key);
 
   @override
-  State<CreateProjectForm> createState() => _NewProjectFormState();
+  NewProjectFormState createState() => NewProjectFormState();
 }
 
-class _NewProjectFormState extends State<CreateProjectForm> {
+class NewProjectFormState extends ConsumerState<NewProjectForm> {
   final _formKey = GlobalKey<FormState>();
   final _uuidKey = const Uuid().v4();
   final projectNameController = TextEditingController();
@@ -104,7 +107,7 @@ class _NewProjectFormState extends State<CreateProjectForm> {
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
-                                  // _createProject();
+                                  _createProject();
                                   _goToProjectHome();
                                 }
                               },
@@ -118,15 +121,19 @@ class _NewProjectFormState extends State<CreateProjectForm> {
         ));
   }
 
-  // Future<void> _createProject() async {
-  //   await ProjectModel(context: context).createProject(ProjectCompanion(
-  //     projectUuid: db.Value(_uuidKey),
-  //     projectName: db.Value(projectNameController.text),
-  //     projectDescription: db.Value(descriptionController.text),
-  //     principalInvestigator: db.Value(piController.text),
-  //     cataloger: db.Value(collectorController.text),
-  //   ));
-  // }
+  Future<void> _createProject() async {
+    final data = Projects(
+      _uuidKey,
+      projectNameController.text,
+      descriptionController.text,
+      '',
+      DateTime.now(),
+      DateTime.now(),
+      piController.text,
+      collectorController.text,
+    );
+    ref.read(realmProvider).addProject(data);
+  }
 
   // Future _checkProjectName() async {
   //   _validationMsg = null;

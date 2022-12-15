@@ -13,8 +13,8 @@ class Projects extends _Projects
     String projectName,
     String projectDescription,
     String projectLocation,
-    String projectCreationDate,
-    String projectLastUpdateDate,
+    DateTime projectCreationDate,
+    DateTime projectLastUpdateDate,
     String principalInvestigator,
     String dataCollector,
   ) {
@@ -57,17 +57,17 @@ class Projects extends _Projects
       RealmObjectBase.set(this, 'projectLocation', value);
 
   @override
-  String get projectCreationDate =>
-      RealmObjectBase.get<String>(this, 'projectCreationDate') as String;
+  DateTime get projectCreationDate =>
+      RealmObjectBase.get<DateTime>(this, 'projectCreationDate') as DateTime;
   @override
-  set projectCreationDate(String value) =>
+  set projectCreationDate(DateTime value) =>
       RealmObjectBase.set(this, 'projectCreationDate', value);
 
   @override
-  String get projectLastUpdateDate =>
-      RealmObjectBase.get<String>(this, 'projectLastUpdateDate') as String;
+  DateTime get projectLastUpdateDate =>
+      RealmObjectBase.get<DateTime>(this, 'projectLastUpdateDate') as DateTime;
   @override
-  set projectLastUpdateDate(String value) =>
+  set projectLastUpdateDate(DateTime value) =>
       RealmObjectBase.set(this, 'projectLastUpdateDate', value);
 
   @override
@@ -100,8 +100,8 @@ class Projects extends _Projects
       SchemaProperty('projectName', RealmPropertyType.string),
       SchemaProperty('projectDescription', RealmPropertyType.string),
       SchemaProperty('projectLocation', RealmPropertyType.string),
-      SchemaProperty('projectCreationDate', RealmPropertyType.string),
-      SchemaProperty('projectLastUpdateDate', RealmPropertyType.string),
+      SchemaProperty('projectCreationDate', RealmPropertyType.timestamp),
+      SchemaProperty('projectLastUpdateDate', RealmPropertyType.timestamp),
       SchemaProperty('principalInvestigator', RealmPropertyType.string),
       SchemaProperty('dataCollector', RealmPropertyType.string),
     ]);

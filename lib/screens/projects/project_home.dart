@@ -120,7 +120,7 @@ class _ProjectHomeState extends State<ProjectHome> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const CreateProjectForm()),
+                      builder: (context) => const NewProjectForm()),
                 );
               },
             ),

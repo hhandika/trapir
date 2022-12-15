@@ -59,7 +59,7 @@ class HomeState extends ConsumerState<Home> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const CreateProjectForm()),
+                      builder: (context) => const NewProjectForm()),
                 );
               },
             ),
@@ -133,8 +133,7 @@ class HomeState extends ConsumerState<Home> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const CreateProjectForm()),
+                MaterialPageRoute(builder: (context) => const NewProjectForm()),
               );
             },
           ),

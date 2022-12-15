@@ -10,8 +10,8 @@ class _Projects {
   late String projectName;
   late String projectDescription;
   late String projectLocation;
-  late String projectCreationDate;
-  late String projectLastUpdateDate;
+  late DateTime projectCreationDate;
+  late DateTime projectLastUpdateDate;
   late String principalInvestigator;
   late String dataCollector;
 }
